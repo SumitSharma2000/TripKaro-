@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Header from "./Components/Header/Header";
+import Footer from "./Components/Footer/Footer";
 
-function App() {
+const App = () => {
+  const [data, setData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
+
+  const fetchData = async () => {
+    let response = await fetch(
+      "https://makemytrip-backend-w2d2.onrender.com/cities"
+    );
+    response = await response.json();
+    setOriginalData(response);
+    setData(response);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Header/>
+        <Switch>
+          <Route path="/" exact component={Home}></Route>
+          <Route path="/adventure" component={Adventure}></Route>
+        </Switch>
+        <Footer/>
+      </Router>
     </div>
   );
-}
+};
 
 export default App;
